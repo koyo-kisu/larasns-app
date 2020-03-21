@@ -12,5 +12,11 @@
 */
 
 Auth::routes();
+// 名前付きルーティング
+// '/'にarticles.indexを割り当てる
+Route::get('/', 'ArticleController@index')->name('articles.index');
 
-Route::get('/', 'ArticleController@index');
+// リソースフルルート
+// articles.indexを除く部分的リソースルート
+// authミドルウェア: login有無をチェック
+Route::resource('/articles', 'ArticleController')->except(['index'])->middleware('auth');
