@@ -22,6 +22,7 @@ class RegisterController extends Controller
     |
     */
 
+    // RegistersUsersトレイスを使用
     use RegistersUsers;
 
     /**
@@ -50,7 +51,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            // unique:users
+            // usersテーブルの他のレコードのnameカラムに、(ユーザー登録画面から)リクエストされたnameと同じ値が無いことをチェック
+            'name' => ['required', 'string', 'alpha_num', 'min:3', 'max:16', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
