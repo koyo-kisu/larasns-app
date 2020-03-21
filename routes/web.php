@@ -18,4 +18,5 @@ Route::get('/', 'ArticleController@index')->name('articles.index');
 
 // リソースフルルート
 // articles.indexを除く部分的リソースルート
-Route::resource('/articles', 'ArticleController')->except(['index']);
+// authミドルウェア: login有無をチェック
+Route::resource('/articles', 'ArticleController')->except(['index'])->middleware('auth');

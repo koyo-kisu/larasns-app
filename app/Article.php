@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+  // 複数代入するカラムを指定
+  // 不正なリクエストへの対策
+  protected $fillable = [
+    'title',
+    'body'
+  ];
+
   // userメソッドの戻り値が、BelongsToクラスであることを宣言
   public function user(): BelongsTo
   {
