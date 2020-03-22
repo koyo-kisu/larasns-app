@@ -44,4 +44,10 @@ class ArticleController extends Controller
     $article->fill($request->all())->save();
     return redirect()->route('articles.index');
   }
+
+  public function destory(Article $article)
+  {
+    $article->delete();
+    return redirect()->route('atricles.index');
+  }
 }
