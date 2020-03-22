@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+  // クラスのインスタンスが生成された時に初期処理として必ず実行
+  public function __construct()
+  {
+    // 第一引数には、モデルのクラス名
+    // 第二引数には、そのモデルのIDがセットされる、ルーティングのパラメータ名
+
+    // 各アクションメソッドを処理する、しないをポリシーのメソッドで定義した判定条件の通りとなります
+    $this->authorizeResource(Article::class, 'article');
+  }
+
   public function index()
   {
     // sortByDescメソッドを使いcreated_atの降順で並び替え
@@ -49,5 +59,10 @@ class ArticleController extends Controller
   {
     $article->delete();
     return redirect()->route('atricles.index');
+  }
+
+  public function show(Article $article)
+  {
+    return view('articles.show', ['article' => $article]);
   }
 }
