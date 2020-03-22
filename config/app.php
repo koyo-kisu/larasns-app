@@ -52,6 +52,8 @@ return [
     |
     */
 
+    // 第一引数のAPP_URLが存在しない場合は、第二引数のがデフォルト値
+    // .envファイルで定義
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
