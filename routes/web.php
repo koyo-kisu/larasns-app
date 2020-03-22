@@ -17,6 +17,9 @@ Auth::routes();
 Route::get('/', 'ArticleController@index')->name('articles.index');
 
 // リソースフルルート
-// articles.indexを除く部分的リソースルート
+// articles.index/showを除いてlogin有無をチェック
 // authミドルウェア: login有無をチェック
-Route::resource('/articles', 'ArticleController')->except(['index'])->middleware('auth');
+Route::resource('/articles', 'ArticleController')->except(['index', 'show'])->middleware('auth');
+
+// showアクションメソッドに対してauthミドルウェアを使わないようにしています
+Route::resource('/articles', 'ArticleController')->only(['show']);
