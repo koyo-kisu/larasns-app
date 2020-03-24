@@ -23,3 +23,11 @@ Route::resource('/articles', 'ArticleController')->except(['index', 'show'])->mi
 
 // showアクションメソッドに対してauthミドルウェアを使わないようにしています
 Route::resource('/articles', 'ArticleController')->only(['show']);
+
+// ルートグループ
+// prefixメソッドは、引数として渡した文字列をURIの先頭に付けます
+// nameメソッドは、ルーティングに名前を付けます
+Route::prefix('articles')->name('articles.')->group(function () {
+    Route::put('/{article}/like', 'ArticleController@like')->name('like')->middleware('auth');
+    Route::delete('/{article}/like', 'ArticleController@unlike')->name('unlike')->middleware('auth');
+});
