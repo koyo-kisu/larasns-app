@@ -42,4 +42,9 @@ Route::get('/tags/{name}', 'TagController@show')->name('tags.show');
 // prefixメソッドとnameメソッドを使った上でgroupメソッドを使うことで、URIとルーティングの名前を簡潔に記述できるようにしています
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('/{name}', 'UserController@show')->name('show');
+
+    Route::middleware('auth')->group(function () {
+        Route::put('/{name}/follow', 'UserController@follow')->name('follow');
+        Route::delete('/{name}/follow', 'UserController@unfollow')->name('unfollow');
+    });
 });
