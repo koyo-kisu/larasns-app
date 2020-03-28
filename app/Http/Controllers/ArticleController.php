@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,17 @@ class ArticleController extends Controller
     // ログイン済みユーザーidをArticleモデルのインスタンスのuser_idプロパティに代入
     $article->user_id = $request->user()->id;
     $article->save();
+
+    // eachメソッドに渡すコールバックは、クロージャ(無名関数)としています
+    // クロージャの第一引数にはコレクションの値が、第二引数にはコレクションのキーが入ります
+    // 第二引数は今回のクロージャの中の処理で特に使わないので、省略しています
+    // use ($article)とあるのは、クロージャの中の処理で変数$articleを使うためです
+    $request->tags->each(function ($tagName) use ($article) {
+      // 引数として渡した「カラム名と値のペア」を持つレコードがテーブルに存在するかどうかを探し、もし存在すればそのモデルを返します
+      $tag = Tag::firstOrCreate(['name' => $tagName]);
+      $article->tags()->attach($tag);
+    });
+
     return redirect()->route('articles.index');
   }
 
