@@ -86,7 +86,7 @@
           <div class="card-text line-height">
       @endif
             <!-- 画面でタグを押すと、そのタグの付いた記事だけを一覧表示する -->
-            <a href="" class="border p-1 mr-1 mt-1 text-muted">
+            <a href="{{ route('tags.show', ['name' => $tag->name]) }}" class="border p-1 mr-1 mt-1 text-muted">
               {{ $tag->hashtag }}
             </a>
       @if($loop->last)
