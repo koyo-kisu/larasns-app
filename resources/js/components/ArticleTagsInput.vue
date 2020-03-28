@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       tag: '',
-      tags: [],
+      tags: this.initialTags,
       autocompleteItems: [{
         text: 'Spain',
       }, {
@@ -41,6 +41,12 @@ export default {
         text: 'China',
       }],
     };
+  },
+  props: {
+    initialTags: {
+      type: Array,
+      default: [],
+    },
   },
   computed: {
     filteredItems() {
