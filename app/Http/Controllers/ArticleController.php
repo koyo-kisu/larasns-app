@@ -28,7 +28,15 @@ class ArticleController extends Controller
 
   public function create()
   {
-    return view('articles.create');
+    // タグテーブルから全てのタグ情報を取得し、Bladeに変数$allTagNamesとして渡しています
+    // タグテーブルに登録済みのタグ数が膨大になってきた場合考慮必要
+    $allTagNames = Tag::all()->map(function ($tag) {
+      return ['text' => $tag->name];
+    });
+
+    return view('articles.create', [
+        'allTagNames' => $allTagNames,
+    ]);
   }
 
   // 引数$requestはArticleRequestクラスのインスタンスである、ということを宣言
@@ -62,9 +70,16 @@ class ArticleController extends Controller
       return ['text' => $tag->name];
     });
 
+    // タグテーブルから全てのタグ情報を取得し、Bladeに変数$allTagNamesとして渡しています
+    // タグテーブルに登録済みのタグ数が膨大になってきた場合に考慮必要
+    $allTagNames = Tag::all()->map(function ($tag) {
+      return ['text' => $tag->name];
+    });
+
     return view('articles.edit', [
       'article' => $article,
       'tagNames' => $tagNames,
+      'allTagNames' => $allTagNames,
     ]);
   }
 
