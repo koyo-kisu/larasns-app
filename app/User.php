@@ -6,6 +6,7 @@ use App\Mail\BareMail;
 use App\Notifications\PasswordResetNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -47,6 +48,12 @@ class User extends Authenticatable
         $this->notify(new PasswordResetNotification($token, new BareMail()));
     }
 
+    // ユーザーと、そのユーザーの投稿した記事は1対多の関係ですが、そのような関係性の場合には、hasManyメソッドを使います
+    public function articles(): HasMany
+    {
+        return $this->hasMany('App\Article');
+    }
+
     // ユーザーモデルから「フォロワーであるユーザー」のモデルにアクセス可能にするメソッド
     // フォローにおけるユーザーモデルとユーザーモデルの関係は多対多となります
     // 第一引数には関係するモデルのモデル名
@@ -65,6 +72,12 @@ class User extends Authenticatable
     public function followings(): BelongsToMany
     {
         return $this->belongsToMany('App\User', 'follows', 'follower_id', 'followee_id')->withTimestamps();
+    }
+
+    // 「いいね」におけるユーザーモデルと記事モデルの関係は多対多となります
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Article', 'likes')->withTimestamps();
     }
 
     // あるユーザーをフォロー中かどうか判定するメソッド

@@ -10,9 +10,25 @@ class UserController extends Controller
     {
         // $nameと一致する名前を持つユーザーモデルをコレクションで取得
         $user = User::where('name', $name)->first();
+        // ユーザーモデルに追加したリレーションのarticlesを使って、ユーザーの投稿した記事モデルをコレクションで取得
+        $articles = $user->articles->sortByDesc('created_at');
  
         return view('users.show', [
             'user' => $user,
+            'articles' => $articles,
+        ]);
+    }
+
+    public function likes(string $name)
+    {
+        $user = User::where('name', $name)->first();
+        
+        // いいねした記事モデルのコレクションを代入
+        $articles = $user->likes->sortByDesc('created_at');
+ 
+        return view('users.likes', [
+            'user' => $user,
+            'articles' => $articles,
         ]);
     }
 
