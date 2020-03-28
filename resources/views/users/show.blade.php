@@ -32,11 +32,13 @@
       </div>
       <div class="card-body">
         <div class="card-text">
-          <a href="" class="text-muted">
-            10 フォロー
+          <a href="" class="text-muted" >
+            <!-- getCountFollowingssAttributeアクセサを利用する記述 -->
+            <b>{{ $user->count_followings }}</b>フォロー中
           </a>
           <a href="" class="text-muted">
-            10 フォロワー
+            <!-- getCountFollowersAttributeアクセサを利用する記述 -->
+            <b>{{ $user->count_followers }}</b>フォロワー
           </a>
         </div>
       </div>

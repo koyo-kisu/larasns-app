@@ -79,4 +79,18 @@ class User extends Authenticatable
             ? (bool)$this->followers->where('id', $user->id)->count()
             : false;
     }
+
+    // ユーザーモデルに現在のフォロー中・フォロワー数を算出するアクセサ
+    public function getCountFollowersAttribute(): int
+    {
+        // このユーザーモデルの全フォロワーがコレクションで返ります
+        return $this->followers->count();
+    }
+ 
+    // ユーザーモデルに現在のフォロー中・フォロワー数を算出するアクセサ
+    public function getCountFollowingsAttribute(): int
+    {
+        // このユーザーモデルが現在フォロー中のユーザー数が求まります
+        return $this->followings->count();
+    }
 }
