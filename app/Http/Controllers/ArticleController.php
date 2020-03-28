@@ -28,7 +28,15 @@ class ArticleController extends Controller
 
   public function create()
   {
-    return view('articles.create');
+    // タグテーブルから全てのタグ情報を取得し、Bladeに変数$allTagNamesとして渡しています
+    // タグテーブルに登録済みのタグ数が膨大になってきた場合考慮必要
+    $allTagNames = Tag::all()->map(function ($tag) {
+      return ['text' => $tag->name];
+    });
+
+    return view('articles.create', [
+        'allTagNames' => $allTagNames,
+    ]);
   }
 
   // 引数$requestはArticleRequestクラスのインスタンスである、ということを宣言
@@ -58,12 +66,35 @@ class ArticleController extends Controller
 
   public function edit(Article $article)
   {
-    return view('articles.edit', ['article' => $article]);
+    $tagNames = $article->tags->map(function ($tag) {
+      return ['text' => $tag->name];
+    });
+
+    // タグテーブルから全てのタグ情報を取得し、Bladeに変数$allTagNamesとして渡しています
+    // タグテーブルに登録済みのタグ数が膨大になってきた場合に考慮必要
+    $allTagNames = Tag::all()->map(function ($tag) {
+      return ['text' => $tag->name];
+    });
+
+    return view('articles.edit', [
+      'article' => $article,
+      'tagNames' => $tagNames,
+      'allTagNames' => $allTagNames,
+    ]);
   }
 
   public function update(ArticleRequest $request, Article $article)
   {
     $article->fill($request->all())->save();
+
+    // detachメソッドを引数無しで使うと、そのリレーションを紐付ける中間テーブルのレコードが全削除されます
+    // 一旦全削除して、新しくタグを登録し直す
+    $article->tags()->detach();
+      $request->tags->each(function ($tagName) use ($article) {
+          $tag = Tag::firstOrCreate(['name' => $tagName]);
+          $article->tags()->attach($tag);
+      });
+
     return redirect()->route('articles.index');
   }
 

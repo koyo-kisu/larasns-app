@@ -28,19 +28,18 @@ export default {
   data() {
     return {
       tag: '',
-      tags: [],
-      autocompleteItems: [{
-        text: 'Spain',
-      }, {
-        text: 'France',
-      }, {
-        text: 'USA',
-      }, {
-        text: 'Germany',
-      }, {
-        text: 'China',
-      }],
+      tags: this.initialTags,
     };
+  },
+  props: {
+    initialTags: {
+      type: Array,
+      default: [],
+    },
+    autocompleteItems: {
+      type: Array,
+      default: [],
+    }
   },
   computed: {
     filteredItems() {
@@ -68,5 +67,10 @@ export default {
     margin-right: 4px;
     border-radius: 0px;
     font-size: 13px;
+  }
+
+  /* 表示されるタグの先頭に擬似要素"#"を付けるようにしています */
+  .vue-tags-input .ti-tag::before {
+    content: "#";
   }
 </style>
