@@ -50,4 +50,12 @@ class Article extends Model
     // 記事モデルからlikesテーブル経由で紐付いているユーザーモデルが、コレクション(配列を拡張したもの)で返ります
     return $this->likes->count();
   }
+
+  // BelongsToMany: 記事モデルとタグモデルの関係は多対多となります
+  // 第二引数には中間テーブルのテーブル名を渡します
+  // 中間テーブルの名前がarticle_tagといった2つのモデル名の単数形をアルファベット順に結合した名前ですので、第二引数は省略可能
+  public function tags(): BelongsToMany
+  {
+    return $this->belongsToMany('App\Tag')->withTimestamps();
+  }
 }
