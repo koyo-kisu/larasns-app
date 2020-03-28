@@ -68,4 +68,9 @@ export default {
     border-radius: 0px;
     font-size: 13px;
   }
+
+  /* 表示されるタグの先頭に擬似要素"#"を付けるようにしています */
+  .vue-tags-input .ti-tag::before {
+    content: "#";
+  }
 </style>
