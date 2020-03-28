@@ -87,7 +87,7 @@
       @endif
             <!-- 画面でタグを押すと、そのタグの付いた記事だけを一覧表示する -->
             <a href="" class="border p-1 mr-1 mt-1 text-muted">
-              {{ $tag->name }}
+              {{ $tag->hashtag }}
             </a>
       @if($loop->last)
           <!-- 繰り返し処理の最後だけ -->
