@@ -79,7 +79,9 @@ class UserController extends Controller
     public function followings(string $name)
     {
         // ユーザーモデルのリレーションfollowings/followersを使用して、フォロー中・フォロワーのユーザーモデルをコレクションで取得しています
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // フォロワーをEagerロード
+            ->load('followings.followers');
  
         $followings = $user->followings->sortByDesc('created_at');
  
