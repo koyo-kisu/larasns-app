@@ -9,7 +9,11 @@ class UserController extends Controller
     public function show(string $name)
     {
         // $nameと一致する名前を持つユーザーモデルをコレクションで取得
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // 記事を投稿したユーザー・記事にいいねしたユーザー・記事に付けられたタグをEagerロードする
+            // loadメソッドでは、このように.区切りを使って、リレーション先の、さらにリレーション先をEagerロードできます
+            ->load(['articles.user', 'articles.likes', 'articles.tags']);
+            
         // ユーザーモデルに追加したリレーションのarticlesを使って、ユーザーの投稿した記事モデルをコレクションで取得
         $articles = $user->articles->sortByDesc('created_at');
  
@@ -21,7 +25,9 @@ class UserController extends Controller
 
     public function likes(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // 記事を投稿したユーザー・記事にいいねしたユーザー・記事に付けられたタグをEagerロードする
+            ->load(['likes.user', 'likes.likes', 'likes.tags']);
         
         // いいねした記事モデルのコレクションを代入
         $articles = $user->likes->sortByDesc('created_at');
@@ -73,7 +79,9 @@ class UserController extends Controller
     public function followings(string $name)
     {
         // ユーザーモデルのリレーションfollowings/followersを使用して、フォロー中・フォロワーのユーザーモデルをコレクションで取得しています
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // フォロワーをEagerロード
+            ->load('followings.followers');
  
         $followings = $user->followings->sortByDesc('created_at');
  
@@ -85,7 +93,9 @@ class UserController extends Controller
     
     public function followers(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // フォロワーをEagerロード
+            ->load('followers.followers');
  
         $followers = $user->followers->sortByDesc('created_at');
  
