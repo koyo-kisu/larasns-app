@@ -9,7 +9,11 @@ class UserController extends Controller
     public function show(string $name)
     {
         // $nameと一致する名前を持つユーザーモデルをコレクションで取得
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // 記事を投稿したユーザー・記事にいいねしたユーザー・記事に付けられたタグをEagerロードする
+            // loadメソッドでは、このように.区切りを使って、リレーション先の、さらにリレーション先をEagerロードできます
+            ->load(['articles.user', 'articles.likes', 'articles.tags']);
+            
         // ユーザーモデルに追加したリレーションのarticlesを使って、ユーザーの投稿した記事モデルをコレクションで取得
         $articles = $user->articles->sortByDesc('created_at');
  
