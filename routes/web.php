@@ -34,3 +34,23 @@ Route::prefix('articles')->name('articles.')->group(function () {
 
 // 新しくタグ別記事一覧画面のルーティングを定義する
 Route::get('/tags/{name}', 'TagController@show')->name('tags.show');
+
+
+// ルートグループ
+// prefixメソッドは、引数として渡した文字列をURIの先頭に付けます
+// nameメソッドは、ルーティングに名前を付けます
+// prefixメソッドとnameメソッドを使った上でgroupメソッドを使うことで、URIとルーティングの名前を簡潔に記述できるようにしています
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/{name}', 'UserController@show')->name('show');
+    // いいねタブが押された場合のユーザーページ表示のルーティング
+    Route::get('/{name}/likes', 'UserController@likes')->name('likes');
+
+    // フォロー中のユーザー・フォロワーの一覧がそれぞれ表示されるようにするルーティング
+    Route::get('/{name}/followings', 'UserController@followings')->name('followings');
+    Route::get('/{name}/followers', 'UserController@followers')->name('followers');
+
+    Route::middleware('auth')->group(function () {
+        Route::put('/{name}/follow', 'UserController@follow')->name('follow');
+        Route::delete('/{name}/follow', 'UserController@unfollow')->name('unfollow');
+    });
+});
