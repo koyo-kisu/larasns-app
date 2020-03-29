@@ -65,6 +65,13 @@ class LoginController extends Controller
             return $this->sendLoginResponse($request);
         }
         
-        // $userがnullの場合の処理は次のパートでここに書く予定
+        // ユーザーモデルに登録されていない場合
+        return redirect()->route('register.{provider}', [
+            'provider' => $provider,
+            'email' => $providerUser->getEmail(),
+            // Googleから発行されたトークンが返ります
+            // Laravel Socialiteでは、このトークンがあれば、任意のタイミングでGoogleアカウントのユーザー情報を取得できます
+            'token' => $providerUser->token,
+        ]);
     }
 }
