@@ -22,7 +22,12 @@ class ArticleController extends Controller
   public function index()
   {
     // sortByDescメソッドを使いcreated_atの降順で並び替え
-    $articles = Article::all()->sortByDesc('create_at');
+    $articles = Article::all()->sortByDesc('create_at')
+      // Eagerロード: loadメソッドに引数としてリレーション名を渡すと、リレーション先のテーブルからもデータを取得
+      // ロードしたい関連へ配列のキーを付け渡してください
+      // 複数のリレーション名を配列で渡すこともできます
+      ->load(['user', 'likes', 'tags']);
+
     return view('articles.index', ['articles' => $articles]);
   }
 
