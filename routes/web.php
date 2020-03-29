@@ -45,6 +45,10 @@ Route::prefix('users')->name('users.')->group(function () {
     // いいねタブが押された場合のユーザーページ表示のルーティング
     Route::get('/{name}/likes', 'UserController@likes')->name('likes');
 
+    // フォロー中のユーザー・フォロワーの一覧がそれぞれ表示されるようにするルーティング
+    Route::get('/{name}/followings', 'UserController@followings')->name('followings');
+    Route::get('/{name}/followers', 'UserController@followers')->name('followers');
+
     Route::middleware('auth')->group(function () {
         Route::put('/{name}/follow', 'UserController@follow')->name('follow');
         Route::delete('/{name}/follow', 'UserController@unfollow')->name('unfollow');
