@@ -93,7 +93,9 @@ class UserController extends Controller
     
     public function followers(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+            // フォロワーをEagerロード
+            ->load('followers.followers');
  
         $followers = $user->followers->sortByDesc('created_at');
  
